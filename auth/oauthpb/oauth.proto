@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package oauth;
+option go_package="./pkg/infraestructure/http/grpc/oauth/oauthpb;oauthpb";
+
+
+
+message ValidateTokenRequest{
+  string access_token = 1;
+}
+
+message ValidateTokenResponse{
+  message UserPayload{
+    int64 user_id = 1;
+  
+    enum Role {
+      UNKNOWN = 0;
+      USER = 1;
+      ADMIN = 2;
+    }
+  
+    Role role = 2;
+  }
+
+  UserPayload user_payload = 1;
+}
+
+service OauthService{
+  rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse) {};
+}

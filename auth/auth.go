@@ -7,6 +7,7 @@ import (
 	"github.com/FacuBar/bookstore_utils-go/auth/oauthpb"
 	"github.com/FacuBar/bookstore_utils-go/rest_errors"
 	"github.com/gin-gonic/gin"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -69,4 +70,25 @@ func RequiresAuth(handler gin.HandlerFunc, rpcC oauthpb.OauthServiceClient) gin.
 
 		handler(c)
 	}
+}
+
+type Client struct {
+	CC *grpc.ClientConn
+	C  oauthpb.OauthServiceClient
+}
+
+func NewClient(address string) (*Client, error) {
+	cc, err := grpc.Dial(address, grpc.WithInsecure())
+	if err != nil {
+		return nil, err
+	}
+
+	c := oauthpb.NewOauthServiceClient(cc)
+
+	client := &Client{
+		CC: cc,
+		C:  c,
+	}
+
+	return client, nil
 }

@@ -143,7 +143,7 @@ func TestRequiresAuth(t *testing.T) {
 		c, r := gin.CreateTestContext(resp)
 
 		r.GET("/test", RequiresAuth(func(c *gin.Context) {
-			authorizedUser := c.MustGet(userPayloadKey).(userPayload)
+			authorizedUser := c.MustGet(userPayloadKey).(UserPayload)
 			c.JSON(200, authorizedUser)
 		}, &oauthSCmock{}))
 
@@ -152,7 +152,7 @@ func TestRequiresAuth(t *testing.T) {
 		r.ServeHTTP(resp, c.Request)
 
 		body, _ := ioutil.ReadAll(resp.Body)
-		var uPayload userPayload
+		var uPayload UserPayload
 		json.Unmarshal(body, &uPayload)
 
 		assert.EqualValues(t, 1, uPayload.Id)

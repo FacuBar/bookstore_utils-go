@@ -17,7 +17,7 @@ const (
 	userPayloadKey = "user_payload"
 )
 
-type userPayload struct {
+type UserPayload struct {
 	Id   int64  `json:"user_id"`
 	Role string `json:"user_role"`
 }

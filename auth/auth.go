@@ -61,7 +61,7 @@ func RequiresAuth(handler gin.HandlerFunc, rpcC oauthpb.OauthServiceClient) gin.
 			return
 		}
 
-		user := userPayload{
+		user := UserPayload{
 			Role: strings.ToLower(oauthpb.ValidateTokenResponse_UserPayload_Role_name[int32(resp.GetUserPayload().GetRole())]),
 			Id:   resp.GetUserPayload().GetUserId(),
 		}
